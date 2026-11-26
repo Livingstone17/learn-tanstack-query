@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react';
 
 async function fetchPosts() {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
@@ -7,12 +7,14 @@ async function fetchPosts() {
 }
 
 function QueryExample() {
-    const { data: post, isLoading, error } = useQuery({ queryKey: ['posts'], queryFn: fetchPosts })
+    const [isLoadData, setIsLoadData] = useState(false);
+    const { data: post, isLoading, error } = useQuery({ queryKey: ['posts'], queryFn: fetchPosts, enabled: isLoadData });
 
 
     return (
         <div className="section">
             <h1>Query Example</h1>
+            <button onClick={() => setIsLoadData(true)}>Load Data</button>
             {isLoading && <p>Loading...</p>}
             {error && <p>Error: {error.message}</p>}
             {post && post.map((p: any) => (
